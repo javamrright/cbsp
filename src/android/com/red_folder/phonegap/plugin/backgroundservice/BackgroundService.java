@@ -114,14 +114,14 @@ public abstract class BackgroundService extends Service {
 
 	@Override  
 	public IBinder onBind(Intent intent) {
-		Log.i(TAG, "onBind called");
+		//Log.i(TAG, "onBind called");
 		return apiEndpoint;
 	}     
 	
 	@Override  
 	public void onCreate() {     
 		super.onCreate();     
-		Log.i(TAG, "Service creating");
+		//Log.i(TAG, "Service creating");
 
 		// Duplicating the call to initialiseService across onCreate and onStart
 		// Done this to ensure that my initialisation code is called.
@@ -131,7 +131,7 @@ public abstract class BackgroundService extends Service {
 
 	@Override
 	public void onStart(Intent intent, int startId) {
-		Log.i(TAG, "Service started");       
+		//Log.i(TAG, "Service started");       
 
 		// Duplicating the call to initialiseService across onCreate and onStart
 		// Done this to ensure that my initialisation code is called.
@@ -142,17 +142,17 @@ public abstract class BackgroundService extends Service {
 	@Override  
 	public void onDestroy() {     
 		super.onDestroy();     
-		Log.i(TAG, "Service destroying");
+		//Log.i(TAG, "Service destroying");
 		
-		Log.i(TAG, "Stopping timer task");
+		//Log.i(TAG, "Stopping timer task");
 		stopTimerTask();
 
-		Log.i(TAG, "Removing the timer");
+		//Log.i(TAG, "Removing the timer");
 		if (this.mTimer != null) {
-			Log.i(TAG, "Timer is not null");
+			//Log.i(TAG, "Timer is not null");
 			try {
 				this.mTimer.cancel();     
-				Log.i(TAG, "Timer.cancel has been called");
+				//Log.i(TAG, "Timer.cancel has been called");
 				this.mTimer = null;
 			} catch (Exception ex) {
 				Log.i(TAG, "Exception has occurred - " + ex.getMessage());
@@ -199,9 +199,9 @@ public abstract class BackgroundService extends Service {
 
 			synchronized (mListeners) {
 				if (mListeners.add(listener))
-					Log.d(TAG, "Listener added");
+					//Log.d(TAG, "Listener added");
 				else
-					Log.d(TAG, "Listener not added");
+					//Log.d(TAG, "Listener not added");
 			}
 		}
 
@@ -221,9 +221,9 @@ public abstract class BackgroundService extends Service {
 					}
 					
 					if (removed)
-						Log.d(TAG, "Listener removed");
+						//Log.d(TAG, "Listener removed");
 					else 
-						Log.d(TAG, "Listener not found");
+						//Log.d(TAG, "Listener not found");
 				}
 			}
 		}
@@ -293,12 +293,12 @@ public abstract class BackgroundService extends Service {
 	private void initialiseService() {
 		
 		if (!this.mServiceInitialised) {
-			Log.i(TAG, "Initialising the service");
+			//Log.i(TAG, "Initialising the service");
 
 			// Initialise the LatestResult object
 			JSONObject tmp = initialiseLatestResult();
 
-			Log.i(TAG, "Syncing result");
+			//Log.i(TAG, "Syncing result");
 			this.setLatestResult(tmp);
 		
 			if (getEnabled())
@@ -327,15 +327,15 @@ public abstract class BackgroundService extends Service {
 	
 	private void stopTimerTask() {
 		
-		Log.i(TAG, "stopTimerTask called");
+		//Log.i(TAG, "stopTimerTask called");
 		if (this.mUpdateTask != null)
 		{
-			Log.i(TAG, "updateTask is not null");
+			//Log.i(TAG, "updateTask is not null");
 			if (this.mUpdateTask.cancel() )
 			{
-				Log.i(TAG, "updateTask.cancel returned true");
+				//Log.i(TAG, "updateTask.cancel returned true");
 			} else {
-				Log.i(TAG, "updateTask.cancel returned false");
+				//Log.i(TAG, "updateTask.cancel returned false");
 			}
 			this.mUpdateTask = null;
 		}
@@ -348,35 +348,35 @@ public abstract class BackgroundService extends Service {
 
 			@Override    
 			public void run() {       
-				Log.i(TAG, "Timer task starting work");
+				//Log.i(TAG, "Timer task starting work");
 
-				Log.d(TAG, "Is the service paused?");
+				//Log.d(TAG, "Is the service paused?");
 				Boolean paused = false;
 				if (mPausedUntil != null) {
-					Log.d(TAG, "Service is paused until " + (new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")).format(mPausedUntil));
+					//Log.d(TAG, "Service is paused until " + (new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")).format(mPausedUntil));
 					Date current = new Date();
-					Log.d(TAG, "Current is " + (new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")).format(current));
+					//Log.d(TAG, "Current is " + (new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")).format(current));
 					if (mPausedUntil.after(current)) {
-						Log.d(TAG, "Service should be paused");
+						//Log.d(TAG, "Service should be paused");
 						paused = true;					// Still paused
 					} else {
-						Log.d(TAG, "Service should not be paused");
+						//Log.d(TAG, "Service should not be paused");
 						mPausedUntil = null;				// Paused time has past so we can clear the pause
 						onPauseComplete();
 					}
 				}
 
 				if (paused) {
-					Log.d(TAG, "Service is paused");
+					//Log.d(TAG, "Service is paused");
 				} else {
-					Log.d(TAG, "Service is not paused");
+					//Log.d(TAG, "Service is not paused");
 					
 					// Runs the doWork 
 					// Sets the last result & updates the listeners
 					doWorkWrapper();
 				}
 
-				Log.i(TAG, "Timer task completing work");
+				//Log.i(TAG, "Timer task completing work");
 			}   
 		};
 
@@ -389,21 +389,21 @@ public abstract class BackgroundService extends Service {
 		try {
 			tmp = doWork();
 		} catch (Exception ex) {
-			Log.i(TAG, "Exception occurred during doWork()", ex);
+			//Log.i(TAG, "Exception occurred during doWork()", ex);
 		}
 
-		Log.i(TAG, "Syncing result");
+		//Log.i(TAG, "Syncing result");
 		setLatestResult(tmp);
 		
 		// Now call the listeners
-		Log.i(TAG, "Sending to all listeners");
+		//Log.i(TAG, "Sending to all listeners");
 		for (int i = 0; i < mListeners.size(); i++)
 		{
 			try {
 				mListeners.get(i).handleUpdate();
-				Log.i(TAG, "Sent listener - " + i);
+				//Log.i(TAG, "Sent listener - " + i);
 			} catch (RemoteException e) {
-				Log.i(TAG, "Failed to send to listener - " + i + " - " + e.getMessage());
+				//Log.i(TAG, "Failed to send to listener - " + i + " - " + e.getMessage());
 			}
 		}
 		
