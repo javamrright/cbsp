@@ -155,7 +155,7 @@ public abstract class BackgroundService extends Service {
 				//Log.i(TAG, "Timer.cancel has been called");
 				this.mTimer = null;
 			} catch (Exception ex) {
-				Log.i(TAG, "Exception has occurred - " + ex.getMessage());
+				//Log.i(TAG, "Exception has occurred - " + ex.getMessage());
 			}
 		}
 	}
