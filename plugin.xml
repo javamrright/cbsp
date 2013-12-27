@@ -51,7 +51,6 @@
         </config-file>
         
         <source-file src="src/android/MyService.java" target-dir="src/com/red_folder/phonegap/plugin/backgroundservice" />
-        <source-file src="src/android/backgroundserviceplugin-3.1.0.jar" target-dir="libs"/>
     </platform>
 
 </plugin>
